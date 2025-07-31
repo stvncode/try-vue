@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PokemonDetailModal from "@/components/PokemonDetailModal.vue"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -18,6 +19,10 @@ const isLoadingType = ref(false)
 const hasMore = ref(true)
 const currentOffset = ref(0)
 const limit = 20
+
+// State for detail modal
+const selectedPokemon = ref<any>(null)
+const isDetailModalOpen = ref(false)
 
 // Load favorites on mount
 onMounted(() => {
@@ -164,8 +169,13 @@ const handleToggleFavorite = (pokemonId: number) => {
 }
 
 const handlePokemonClick = (pokemon: any) => {
-  store.setCurrentPokemon(pokemon)
-  console.log("Pokemon clicked:", pokemon.name)
+  selectedPokemon.value = pokemon
+  isDetailModalOpen.value = true
+}
+
+const handleCloseDetailModal = () => {
+  isDetailModalOpen.value = false
+  selectedPokemon.value = null
 }
 
 // Infinite scroll handler
@@ -297,5 +307,14 @@ onUnmounted(() => {
       <p class="text-gray-600 dark:text-gray-400 mb-4">Try adjusting your search or filters</p>
       <Button @click="handleClearFilters">Clear Filters</Button>
     </div>
+
+    <!-- Pokemon Detail Modal -->
+    <PokemonDetailModal
+      :pokemon="selectedPokemon"
+      :is-open="isDetailModalOpen"
+      :is-favorite="store.isFavorite(selectedPokemon?.id || 0)"
+      :on-close="handleCloseDetailModal"
+      :on-toggle-favorite="handleToggleFavorite"
+    />
   </div>
 </template>

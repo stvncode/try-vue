@@ -25,11 +25,13 @@ const data = {
       title: "Battle Simulator",
       url: "/battle",
       icon: Gamepad2,
+      badge: "Available",
     },
     {
       title: "Team Builder",
       url: "/teambuilder",
       icon: Users,
+      badge: "Available",
     },
     {
       title: "Quiz",

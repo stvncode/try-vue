@@ -38,6 +38,23 @@ export interface Pokemon {
     is_hidden: boolean
     slot: number
   }>
+  moves: Array<{
+    move: {
+      name: string
+      url: string
+    }
+    version_group_details: Array<{
+      level_learned_at: number
+      move_learn_method: {
+        name: string
+        url: string
+      }
+      version_group: {
+        name: string
+        url: string
+      }
+    }>
+  }>
 }
 
 export interface PokemonListResponse {
@@ -68,6 +85,60 @@ export interface Type {
       url: string
     }
   }>
+}
+
+export interface EvolutionChain {
+  id: number
+  baby_trigger_item: any
+  chain: {
+    evolution_details: Array<{
+      gender: number | null
+      held_item: { name: string; url: string } | null
+      item: { name: string; url: string } | null
+      known_move: { name: string; url: string } | null
+      known_move_type: { name: string; url: string } | null
+      location: { name: string; url: string } | null
+      min_affection: number | null
+      min_beauty: number | null
+      min_happiness: number | null
+      min_level: number | null
+      needs_overworld_rain: boolean
+      party_species: { name: string; url: string } | null
+      party_type: { name: string; url: string } | null
+      relative_physical_stats: number | null
+      time_of_day: string
+      trade_species: { name: string; url: string } | null
+      trigger: { name: string; url: string }
+      turn_upside_down: boolean
+    }>
+    evolves_to: Array<{
+      evolution_details: Array<{
+        gender: number | null
+        held_item: { name: string; url: string } | null
+        item: { name: string; url: string } | null
+        known_move: { name: string; url: string } | null
+        known_move_type: { name: string; url: string } | null
+        location: { name: string; url: string } | null
+        min_affection: number | null
+        min_beauty: number | null
+        min_happiness: number | null
+        min_level: number | null
+        needs_overworld_rain: boolean
+        party_species: { name: string; url: string } | null
+        party_type: { name: string; url: string } | null
+        relative_physical_stats: number | null
+        time_of_day: string
+        trade_species: { name: string; url: string } | null
+        trigger: { name: string; url: string }
+        turn_upside_down: boolean
+      }>
+      evolves_to: Array<any>
+      is_baby: boolean
+      species: { name: string; url: string }
+    }>
+    is_baby: boolean
+    species: { name: string; url: string }
+  }
 }
 
 export const pokemonApi = {
@@ -108,5 +179,19 @@ export const pokemonApi = {
       previous: null,
       results: filtered,
     }
+  },
+
+  // Get Pokemon species for evolution chain
+  async getPokemonSpecies(nameOrId: string | number): Promise<any> {
+    const response = await fetch(`${BASE_URL}/pokemon-species/${nameOrId}`)
+    if (!response.ok) throw new Error(`Failed to fetch Pokemon species: ${nameOrId}`)
+    return response.json()
+  },
+
+  // Get evolution chain
+  async getEvolutionChain(id: number): Promise<EvolutionChain> {
+    const response = await fetch(`${BASE_URL}/evolution-chain/${id}`)
+    if (!response.ok) throw new Error(`Failed to fetch evolution chain: ${id}`)
+    return response.json()
   },
 }
