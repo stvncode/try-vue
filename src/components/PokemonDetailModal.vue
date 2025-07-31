@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Pokemon } from "@/lib/api"
 import { ArrowRight, Heart, Star, Target, Zap } from "lucide-vue-next"
 import { computed } from "vue"
-import EvolutionChain from "./EvolutionChain.vue"
+import EvolutionChain from "../features/explorer/EvolutionChain.vue"
 
 interface Props {
   pokemon: Pokemon | null

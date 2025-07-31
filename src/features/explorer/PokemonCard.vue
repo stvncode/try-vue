@@ -69,7 +69,6 @@ const handleClick = () => {
     class="group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 cursor-pointer bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-2 hover:border-primary/50"
     @click="handleClick"
   >
-    <!-- Favorite Button -->
     <Button
       variant="ghost"
       size="icon"
@@ -84,7 +83,6 @@ const handleClick = () => {
       />
     </Button>
 
-    <!-- Pokemon Number -->
     <div class="absolute top-2 left-2 z-10">
       <Badge variant="secondary" class="text-xs font-mono">
         #{{ pokemon.id.toString().padStart(3, "0") }}
@@ -93,7 +91,6 @@ const handleClick = () => {
 
     <CardHeader class="pb-2">
       <div class="flex flex-col items-center space-y-2">
-        <!-- Pokemon Image -->
         <div class="relative w-32 h-32 mx-auto">
           <img
             :src="pokemonImage"
@@ -101,14 +98,12 @@ const handleClick = () => {
             class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
             loading="lazy"
           />
-          <!-- Shiny indicator -->
           <Star
             v-if="pokemon.sprites.front_shiny"
             class="absolute -top-1 -right-1 h-4 w-4 text-yellow-400 fill-yellow-400"
           />
         </div>
 
-        <!-- Pokemon Name -->
         <h3 class="text-lg font-bold text-center capitalize text-gray-800 dark:text-gray-200">
           {{ pokemon.name }}
         </h3>
@@ -116,7 +111,6 @@ const handleClick = () => {
     </CardHeader>
 
     <CardContent class="pt-0">
-      <!-- Types -->
       <div class="flex justify-center gap-2 mb-3">
         <Badge
           v-for="type in pokemon.types"
@@ -130,7 +124,6 @@ const handleClick = () => {
         </Badge>
       </div>
 
-      <!-- Stats Preview -->
       <div class="grid grid-cols-2 gap-2 text-xs">
         <div class="text-center">
           <div class="text-gray-500 dark:text-gray-400">Height</div>
@@ -142,7 +135,6 @@ const handleClick = () => {
         </div>
       </div>
 
-      <!-- Top Stats -->
       <div class="mt-3 space-y-1">
         <div
           v-for="stat in pokemon.stats.slice(0, 3)"
@@ -165,7 +157,6 @@ const handleClick = () => {
       </div>
     </CardContent>
 
-    <!-- Hover overlay -->
     <div
       class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
     ></div>

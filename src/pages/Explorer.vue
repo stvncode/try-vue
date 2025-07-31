@@ -12,7 +12,6 @@ import { computed, onMounted, onUnmounted, ref } from "vue"
 
 const store = usePokemonStore()
 
-// State for infinite scrolling
 const allPokemon = ref<any[]>([])
 const isLoadingMore = ref(false)
 const isLoadingType = ref(false)
@@ -20,17 +19,14 @@ const hasMore = ref(true)
 const currentOffset = ref(0)
 const limit = 20
 
-// State for detail modal
 const selectedPokemon = ref<any>(null)
 const isDetailModalOpen = ref(false)
 
-// Load favorites on mount
 onMounted(() => {
   store.loadFavorites()
   loadInitialPokemon()
 })
 
-// Load initial Pokemon
 const loadInitialPokemon = async () => {
   try {
     const response = await pokemonApi.getPokemonList(limit, 0)
@@ -44,7 +40,6 @@ const loadInitialPokemon = async () => {
   }
 }
 
-// Load more Pokemon for infinite scrolling
 const loadMorePokemon = async () => {
   if (isLoadingMore.value || !hasMore.value) return
 
@@ -63,7 +58,6 @@ const loadMorePokemon = async () => {
   }
 }
 
-// Search Pokemon
 const searchPokemon = async (query: string) => {
   if (!query.trim()) {
     loadInitialPokemon()
@@ -75,26 +69,23 @@ const searchPokemon = async (query: string) => {
     const pokemonPromises = response.results.map((pokemon) => pokemonApi.getPokemon(pokemon.name))
     const pokemonData = await Promise.all(pokemonPromises)
     allPokemon.value = pokemonData
-    hasMore.value = false // No pagination for search results
+    hasMore.value = false
   } catch (error) {
     console.error("Failed to search Pokemon:", error)
   }
 }
 
-// Load Pokemon by type
 const loadPokemonByType = async (type: string) => {
   isLoadingType.value = true
   try {
-    // Get type information to find all Pokemon of this type
     const typeData = await pokemonApi.getType(type)
     const pokemonPromises = typeData.pokemon.map((p: any) => pokemonApi.getPokemon(p.pokemon.name))
     const pokemonData = await Promise.all(pokemonPromises)
 
-    // Sort Pokemon by their ID/number
     const sortedPokemonData = pokemonData.sort((a, b) => a.id - b.id)
 
     allPokemon.value = sortedPokemonData
-    hasMore.value = false // No pagination for type filtering
+    hasMore.value = false
   } catch (error) {
     console.error("Failed to load Pokemon by type:", error)
   } finally {
@@ -102,11 +93,9 @@ const loadPokemonByType = async (type: string) => {
   }
 }
 
-// Load Pokemon by multiple types
 const loadPokemonByTypes = async (types: string[]) => {
   isLoadingType.value = true
   try {
-    // Get all Pokemon for each type
     const allTypePromises = types.map(async (type) => {
       const typeData = await pokemonApi.getType(type)
       return typeData.pokemon.map((p: any) => p.pokemon.name)
@@ -114,18 +103,15 @@ const loadPokemonByTypes = async (types: string[]) => {
 
     const allTypeResults = await Promise.all(allTypePromises)
 
-    // Flatten and remove duplicates
     const uniquePokemonNames = [...new Set(allTypeResults.flat())]
 
-    // Fetch full Pokemon data for unique names
     const pokemonPromises = uniquePokemonNames.map((name) => pokemonApi.getPokemon(name))
     const pokemonData = await Promise.all(pokemonPromises)
 
-    // Sort Pokemon by their ID/number
     const sortedPokemonData = pokemonData.sort((a, b) => a.id - b.id)
 
     allPokemon.value = sortedPokemonData
-    hasMore.value = false // No pagination for type filtering
+    hasMore.value = false
   } catch (error) {
     console.error("Failed to load Pokemon by types:", error)
   } finally {
@@ -133,12 +119,10 @@ const loadPokemonByTypes = async (types: string[]) => {
   }
 }
 
-// Computed properties
 const filteredPokemon = computed(() => {
   return allPokemon.value
 })
 
-// Event handlers
 const handleSearchChange = (query: string) => {
   store.setSearchQuery(query)
   searchPokemon(query)
@@ -147,14 +131,11 @@ const handleSearchChange = (query: string) => {
 const handleTypeChange = async (types: string[]) => {
   store.setSelectedTypes(types)
 
-  // If a type is selected, load all Pokemon of that type
   if (types.length === 1) {
     await loadPokemonByType(types[0])
   } else if (types.length === 0) {
-    // If no types selected, go back to normal browsing
     loadInitialPokemon()
   } else {
-    // For multiple types, load Pokemon that have ANY of the selected types
     await loadPokemonByTypes(types)
   }
 }
@@ -178,7 +159,6 @@ const handleCloseDetailModal = () => {
   selectedPokemon.value = null
 }
 
-// Infinite scroll handler
 const handleScroll = () => {
   const scrollTop = window.scrollY
   const windowHeight = window.innerHeight
@@ -189,12 +169,10 @@ const handleScroll = () => {
   }
 }
 
-// Add scroll listener
 onMounted(() => {
   window.addEventListener("scroll", handleScroll)
 })
 
-// Remove scroll listener on unmount
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll)
 })
@@ -202,7 +180,6 @@ onUnmounted(() => {
 
 <template>
   <div class="space-y-6">
-    <!-- Header -->
     <div class="text-center space-y-2">
       <h1
         class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
@@ -214,7 +191,6 @@ onUnmounted(() => {
       </p>
     </div>
 
-    <!-- Search and Filters -->
     <PokemonSearch
       :search-query="store.searchQuery"
       :selected-types="store.selectedTypes"
@@ -223,9 +199,7 @@ onUnmounted(() => {
       :on-clear-filters="handleClearFilters"
     />
 
-    <!-- Loading State -->
     <div v-if="(allPokemon.length === 0 && !isLoadingMore) || isLoadingType" class="space-y-4">
-      <!-- Type Loading Message -->
       <div v-if="isLoadingType" class="text-center py-8">
         <div class="flex items-center justify-center gap-2 mb-4">
           <Loader2 class="h-8 w-8 animate-spin text-blue-600" />
@@ -246,7 +220,6 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <!-- Skeleton Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <Card v-for="i in 8" :key="i" class="p-4">
           <div class="space-y-3">
@@ -261,9 +234,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Pokemon Grid -->
     <div v-else-if="filteredPokemon.length > 0" class="space-y-6">
-      <!-- Results Count -->
       <div class="flex justify-between items-center">
         <p class="text-gray-600 dark:text-gray-400">
           Showing {{ filteredPokemon.length }} Pokemon
@@ -271,7 +242,6 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <!-- Pokemon Cards -->
       <div
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"
       >
@@ -285,7 +255,6 @@ onUnmounted(() => {
         />
       </div>
 
-      <!-- Load More Indicator -->
       <div v-if="isLoadingMore" class="flex justify-center py-8">
         <div class="flex items-center gap-2">
           <Loader2 class="h-6 w-6 animate-spin" />
@@ -293,7 +262,6 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- End of Results -->
       <div v-else-if="!hasMore && !store.searchQuery" class="text-center py-8">
         <p class="text-gray-500 dark:text-gray-400">
           You've reached the end! All Pokemon have been loaded.
@@ -301,14 +269,12 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Empty State -->
     <div v-else class="text-center py-12">
       <div class="text-gray-500 text-lg font-semibold mb-2">No Pokemon found</div>
       <p class="text-gray-600 dark:text-gray-400 mb-4">Try adjusting your search or filters</p>
       <Button @click="handleClearFilters">Clear Filters</Button>
     </div>
 
-    <!-- Pokemon Detail Modal -->
     <PokemonDetailModal
       :pokemon="selectedPokemon"
       :is-open="isDetailModalOpen"
