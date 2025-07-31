@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Gamepad2, Home, Map } from "lucide-vue-next"
+import { BookOpen, Brain, Gamepad2, Home, Map, Users } from "lucide-vue-next"
 import NavMain from "./NavMain.vue"
 
 import type { SidebarProps } from "@/components/ui/sidebar"
@@ -23,12 +23,12 @@ const data = {
     },
     {
       title: "Battle Simulator",
-      url: "/battle-simulator",
+      url: "/battle",
       icon: Gamepad2,
     },
     {
       title: "Team Builder",
-      url: "/team-builder",
+      url: "/teambuilder",
       icon: Users,
     },
     {
@@ -39,7 +39,7 @@ const data = {
     {
       title: "Collection",
       url: "/collection",
-      icon: Collection,
+      icon: BookOpen,
     },
   ],
 }
@@ -47,7 +47,19 @@ const data = {
 
 <template>
   <Sidebar v-bind="props">
-    <SidebarHeader> Pokemon Explorer </SidebarHeader>
+    <SidebarHeader class="border-b border-border/5 bg-muted/40">
+      <div class="flex h-[60px] items-center">
+        <div class="flex items-center gap-2 px-2">
+          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <span class="text-sm font-semibold text-primary-foreground">P</span>
+          </div>
+          <div class="grid flex-1 text-left text-sm leading-tight">
+            <span class="truncate font-semibold">Pokemon Hub</span>
+            <span class="truncate text-xs">Your Pokemon Companion</span>
+          </div>
+        </div>
+      </div>
+    </SidebarHeader>
     <SidebarContent>
       <NavMain :items="data.navMain" />
     </SidebarContent>
