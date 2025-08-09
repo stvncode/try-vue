@@ -9,11 +9,8 @@ import {
 } from "@/features/battle"
 import type { Pokemon } from "@/lib/api"
 import { pokemonApi } from "@/lib/api"
-import { usePokemonStore } from "@/stores/pokemon"
 import { Sword, Target, Zap } from "lucide-vue-next"
 import { onMounted, ref } from "vue"
-
-const store = usePokemonStore()
 
 const pokemon1 = ref<Pokemon | null>(null)
 const pokemon2 = ref<Pokemon | null>(null)

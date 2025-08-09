@@ -4,6 +4,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Download, Save } from "lucide-vue-next"
 
+interface Props {
+  teamName: string
+  teamLength: number
+}
+
+defineProps<Props>()
+
 const emit = defineEmits<{
   "update:teamName": [value: string]
   saveTeam: []

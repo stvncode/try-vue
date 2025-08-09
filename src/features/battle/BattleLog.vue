@@ -8,7 +8,7 @@ interface Props {
   currentTurn: number
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 </script>
 
 <template>

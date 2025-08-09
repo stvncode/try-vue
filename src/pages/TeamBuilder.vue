@@ -9,11 +9,8 @@ import {
 } from "@/features/builder"
 import type { Pokemon } from "@/lib/api"
 import { pokemonApi } from "@/lib/api"
-import { usePokemonStore } from "@/stores/pokemon"
 import { Shield, Target, Users } from "lucide-vue-next"
 import { onMounted, ref } from "vue"
-
-const store = usePokemonStore()
 
 const teamName = ref("My Pokemon Team")
 const team = ref<Pokemon[]>([])

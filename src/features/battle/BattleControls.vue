@@ -7,7 +7,7 @@ interface Props {
   isBattleInProgress: boolean
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const emit = defineEmits<{
   startBattle: []

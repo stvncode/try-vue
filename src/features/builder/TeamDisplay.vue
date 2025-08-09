@@ -10,7 +10,7 @@ interface Props {
   team: Pokemon[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const emit = defineEmits<{
   removePokemon: [index: number]

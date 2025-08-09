@@ -16,7 +16,7 @@ import { useRoute, useRouter } from "vue-router"
 const route = useRoute()
 const router = useRouter()
 
-const props = defineProps<{
+defineProps<{
   items: {
     title: string
     url: string

@@ -33,8 +33,10 @@ const emit = defineEmits<{
   selectPokemon: [pokemonName: string]
 }>()
 
-const handlePokemonSelect = (pokemonName: string) => {
-  emit("selectPokemon", pokemonName)
+const handlePokemonSelect = (pokemonName: any) => {
+  if (pokemonName && typeof pokemonName === "string") {
+    emit("selectPokemon", pokemonName)
+  }
 }
 
 const getPlayerColor = () => {
