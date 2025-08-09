@@ -23,7 +23,7 @@ const features = [
     icon: Sword,
     route: "/battle",
     color: "from-red-500 to-orange-500",
-    badge: "Coming Soon",
+    badge: "Available",
   },
   {
     title: "Team Builder",
@@ -32,7 +32,7 @@ const features = [
     icon: Users,
     route: "/teambuilder",
     color: "from-green-500 to-emerald-500",
-    badge: "Coming Soon",
+    badge: "Available",
   },
   {
     title: "Pokemon Quiz",

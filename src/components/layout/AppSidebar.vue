@@ -3,7 +3,15 @@ import { BookOpen, Brain, Gamepad2, Home, Map, Users } from "lucide-vue-next"
 import NavMain from "./NavMain.vue"
 
 import type { SidebarProps } from "@/components/ui/sidebar"
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarRail,
+  useSidebar,
+} from "@/components/ui/sidebar"
+
+const { state } = useSidebar()
 
 const props = withDefaults(defineProps<SidebarProps>(), {
   collapsible: "icon",
@@ -52,10 +60,19 @@ const data = {
     <SidebarHeader class="border-b border-border/5 bg-muted/40">
       <div class="flex h-[60px] items-center">
         <div class="flex items-center gap-2 px-2">
-          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+          <div
+            v-if="state === 'expanded'"
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary"
+          >
             <span class="text-sm font-semibold text-primary-foreground">P</span>
           </div>
-          <div class="grid flex-1 text-left text-sm leading-tight">
+          <div
+            v-else
+            class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary -ml-2 -mt-6.5"
+          >
+            <span class="text-sm font-semibold text-primary-foreground">P</span>
+          </div>
+          <div v-if="state === 'expanded'" class="grid flex-1 text-left text-sm leading-tight">
             <span class="truncate font-semibold">Pokemon Hub</span>
             <span class="truncate text-xs">Your Pokemon Companion</span>
           </div>
